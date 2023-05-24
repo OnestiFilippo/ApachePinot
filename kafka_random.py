@@ -2,11 +2,11 @@ from kafka import KafkaProducer
 import json
 import random
 import time
+import datetime
 
 producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 
-for i in range(1000):
-    ts = time.time()
-    producer.send('curtopic',{"sensor": "sensore1", "value": random.randint(0,500), "timestamp": int(ts)})
+while True:
+    ts = datetime.datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
+    producer.send('power', {"timestamp":ts , "sensor" : "piSensor" , "powerValue" : random.randint(0,1000)})
     time.sleep(1)
-producer.flush()
