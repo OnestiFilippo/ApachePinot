@@ -169,6 +169,6 @@ Sostituendo al posto di XXX.XXX.XXX.XXX l'indirizzo IP locale della macchina in 
 
 Ora è possibile creare i propri Charts e Dashboard selezionando la tabella desiderata.
 
-![image](https://github.com/OnestiFilippo/ApachePinot/assets/77025139/871b3305-c8e4-4d82-ba8e-4a4952d7aa3b)
+![image](https://github.com/OnestiFilippo/ApachePinot/assets/77025139/4e366137-4cc8-4764-9c2d-34fc3018772b)
 
 
