@@ -1,3 +1,5 @@
+# Script python che prende dati reali da un sensore di corrente
+
 import time
 import datetime
 import paho.mqtt.subscribe as subscribe
