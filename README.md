@@ -127,4 +127,46 @@ while True:
 
 ## Apache Superset
 
+Per l'inizializzazione di Apache Superset eseguire il seguente comando per la clonazione della repository di Superset:
+``` bash
+git clone https://github.com/apache/superset.git
+```
+spostarsi nella cartella appena creata:
+``` bash
+cd superset
+```
+e creare il file "requirements-local.txt" per inizializzare la libreria per la connessione tra Apache Pinot e Apache Superset:
+``` bash
+touch ./docker/requirements-local.txt
+echo "pinotdb" >> ./docker/requirements-local.txt
+```
+Lanciare il comando per la ricostruzione del docker-compose:
+``` bash
+docker-compose build --force-rm
+```
+Avviare Apache Superset tramite docker-compose 
+``` bash
+docker-compose -f docker-compose-non-dev.yml pull
+docker-compose -f docker-compose-non-dev.yml up
+```
+
+Una volta avviato Superset aprire la pagina http://localhost:8088 e accedere con le credenziali di default:
+``` bash
+username: admin
+password: admin
+```
+A questo punto connettere il database di Apache Pinot a Apache Superset tramite i seguenti passaggi:
+Dalla homepage di Superset:
+Settings -> Database Connections -> +DATABASE
+Dal menu a tendina selezionare Apache Pinot
+Nel campo SQLALCHEMY URI inserire:
+``` bash
+pinot://XXX.XXX.XXX.XXX:8099/query/sql?controller=http://XXX.XXX.XXX.XXX:9000
+```
+Sostituendo al posto di XXX.XXX.XXX.XXX l'indirizzo IP locale della macchina in cui è in esecuzione il cluster Pinot.
+
+Ora è possibile creare i propri Charts e Dashboard selezionando la tabella desiderata.
+
+![image](https://github.com/OnestiFilippo/ApachePinot/assets/77025139/871b3305-c8e4-4d82-ba8e-4a4952d7aa3b)
+
 
