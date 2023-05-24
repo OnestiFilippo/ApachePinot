@@ -110,7 +110,13 @@ Assicurarsi di inserire correttamente il valore di "stream.kafka.broker.list" su
 
 Così facendo si crea un topic Kafka di nome topic su cui verranno inviati i dati dallo script python e ricevuti dal cluster di Pinot.
 
-Per inviare i dati alla tabella di Pinot si può utilizzare uno script python che genera valori casuali e li invia alla tabella di Pinot tramite il topic Kafka appena generato.
+### Installazione libreria kafka-python
+
+``` bash
+pip3 install kafka-python
+``` 
+Per inviare i dati alla tabella di Pinot si può utilizzare uno script python (kafka_random.py) che genera valori casuali e li invia ogni secondo con il timestamp attuale alla tabella di Pinot tramite il topic Kafka appena generato.
+
 
 ``` bash
 from kafka import KafkaProducer
@@ -126,7 +132,26 @@ while True:
     producer.send('power', {"timestamp":ts , "sensor" : "piSensor" , "powerValue" : random.randint(0,1000)})
     time.sleep(1)
 ```
+Come alternativa si può usare lo script kafka_daily_simulation.py che genera valori casuali per una durata simulata di una giornata. 
+``` bash
+from kafka import KafkaProducer
+import json
+import random
+import time
+import datetime
 
+start = 1684965600
+
+producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+
+i=0
+
+for i in range(0,8640):
+    ts = datetime.datetime.fromtimestamp(start+i*10).strftime("%d/%m/%Y - %H:%M:%S")
+    producer.send('power', {"timestamp":ts , "sensor" : "piSensor" , "powerValue" : random.randint(0,1000)})
+    print(ts)
+    time.sleep(0.001)
+``` 
 ## Apache Superset
 
 Per l'inizializzazione di Apache Superset eseguire il seguente comando per la clonazione della repository di Superset:
