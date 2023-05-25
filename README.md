@@ -2,11 +2,18 @@
 ## Apache Pinot Cluster
 
 ### Docker
-docker-compose per inizializzazione cluster Apache Pinot e Apache Kafka
+docker-compose per inizializzazione cluster Apache Pinot e Apache Kafka su sistemi WINDOWS, LINUX e MACOS con processori non Apple Silicon (M1, M2, ..)
 
 ```bash
   docker-compose --project-name pinot up
 ```
+
+Per avviare il cluster Apache Pinot su MacOS con processori Apple Silicon (M1, M2, ..) utilizzare il seguente comando:
+
+```bash
+  docker-compose -f docker-compose-AppleSilicon.yml --project-name pinot up
+```
+
 Una volta avviato il cluster collegarsi all'indirizzo:
 
 http://localhost:9000
