@@ -46,7 +46,7 @@ Per creare lo schema e la tabella per l'inserimento dei dati in Pinot recarsi ne
 }
 ```
 
-Una volta creato lo schema si crei la tabella Realtime tramite il pulsante "Add Realtime Table":
+Una volta creato lo schema si crei la tabella Realtime tramite il pulsante "Add Realtime Table" secondo le seguenti impostazioni:
 
 ```bash
 {
@@ -115,15 +115,15 @@ Una volta creato lo schema si crei la tabella Realtime tramite il pulsante "Add 
 
 Assicurarsi di inserire correttamente il valore di "stream.kafka.broker.list" su "pinot-kafka:9093" e "stream.kafka.topic.name" su "power".
 
-Così facendo si crea un topic Kafka di nome topic su cui verranno inviati i dati dallo script python e ricevuti dal cluster di Pinot.
+Così facendo si crea automaticamente un topic Kafka di nome "power" su cui verranno inviati i dati dallo script python e ricevuti dal cluster di Pinot.
 
 ### Installazione libreria kafka-python
 
 ``` bash
 pip3 install kafka-python
 ``` 
-Per inviare i dati alla tabella di Pinot si può utilizzare uno script python (kafka_random.py) che genera valori casuali e li invia ogni secondo con il timestamp attuale alla tabella di Pinot tramite il topic Kafka appena generato.
 
+Per inviare i dati alla tabella di Pinot si può utilizzare uno script python (kafka_random.py) che genera valori casuali e li invia ogni secondo con il timestamp attuale alla tabella di Pinot tramite il topic Kafka appena generato.
 
 ``` bash
 from kafka import KafkaProducer
@@ -139,7 +139,7 @@ while True:
     producer.send('power', {"timestamp":ts , "sensor" : "piSensor" , "powerValue" : random.randint(0,1000)})
     time.sleep(1)
 ```
-Come alternativa si può usare lo script kafka_daily_simulation.py che genera valori casuali per una durata simulata di una giornata. 
+In alternativa si può usare lo script kafka_daily_simulation.py che genera valori casuali per una durata simulata di una giornata. 
 ``` bash
 from kafka import KafkaProducer
 import json
@@ -159,7 +159,7 @@ for i in range(0,8640):
     print(ts)
     time.sleep(0.001)
 ``` 
-## Apache Superset
+## Apache Superset (solo WINDOWS, LINUX e MACOS NON APPLE SILICON)
 
 Per l'inizializzazione di Apache Superset eseguire il seguente comando per la clonazione della repository di Superset:
 ``` bash
