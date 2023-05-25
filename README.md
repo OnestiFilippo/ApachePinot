@@ -201,6 +201,7 @@ Sostituendo al posto di XXX.XXX.XXX.XXX l'indirizzo IP locale della macchina in 
 
 Ora è possibile creare i propri Charts e Dashboard selezionando la tabella desiderata.
 
+Esempio di Line Chart di dati casuali:
 ![image](https://github.com/OnestiFilippo/ApachePinot/assets/77025139/4e366137-4cc8-4764-9c2d-34fc3018772b)
 
 
