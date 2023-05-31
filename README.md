@@ -174,6 +174,12 @@ e creare il file "requirements-local.txt" per inizializzare la libreria per la c
 touch ./docker/requirements-local.txt
 echo "pinotdb" >> ./docker/requirements-local.txt
 ```
+Aggiungere anche la seguente riga nel file superset/docker/pythonpath_dev/superset_config.py:
+``` bash
+PUBLIC_ROLE_LIKE = 'Gamma'
+```
+Per fornire i permessi necessari per la visualizzazione del grafico sulla pagina HTML.
+
 Lanciare il comando per la ricostruzione del docker-compose:
 ``` bash
 docker-compose build --force-rm
