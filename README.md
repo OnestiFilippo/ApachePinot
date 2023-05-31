@@ -178,7 +178,7 @@ Aggiungere anche la seguente riga nel file superset/docker/pythonpath_dev/supers
 ``` bash
 PUBLIC_ROLE_LIKE = 'Gamma'
 ```
-Per fornire i permessi necessari per la visualizzazione del grafico sulla pagina HTML.
+Questo serve a fornire i permessi necessari per la visualizzazione del grafico sulla pagina HTML.
 
 Lanciare il comando per la ricostruzione del docker-compose:
 ``` bash
