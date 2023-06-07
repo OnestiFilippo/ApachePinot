@@ -135,9 +135,11 @@ import datetime
 producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 
 while True:
-    ts = datetime.datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
+    ts = round(time.time())
+    
     producer.send('power', {"timestamp":ts , "sensor" : "piSensor" , "powerValue" : random.randint(0,1000)})
     time.sleep(1)
+
 ```
 In alternativa si può usare lo script kafka_daily_simulation.py che genera valori casuali per una durata simulata di una giornata. 
 ``` bash
@@ -154,10 +156,11 @@ producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=la
 i=0
 
 for i in range(0,8640):
-    ts = datetime.datetime.fromtimestamp(start+i*10).strftime("%d/%m/%Y - %H:%M:%S")
+    ts = round(time.time())
     producer.send('power', {"timestamp":ts , "sensor" : "piSensor" , "powerValue" : random.randint(0,1000)})
     print(ts)
     time.sleep(0.001)
+
 ``` 
 ## Apache Superset (solo WINDOWS, LINUX e MACOS NON APPLE SILICON)
 
