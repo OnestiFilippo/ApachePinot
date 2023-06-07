@@ -11,7 +11,7 @@ producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=la
 i=0
 
 for i in range(0,8640):
-    ts = datetime.datetime.fromtimestamp(start+i*10).strftime("%d/%m/%Y - %H:%M:%S")
+    ts = round(time.time())
     producer.send('power', {"timestamp":ts , "sensor" : "piSensor" , "powerValue" : random.randint(0,1000)})
     print(ts)
     time.sleep(0.001)

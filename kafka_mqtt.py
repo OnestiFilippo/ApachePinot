@@ -1,5 +1,3 @@
-# Script python che prende dati reali da un sensore di corrente
-
 import time
 import datetime
 import paho.mqtt.subscribe as subscribe
@@ -14,8 +12,9 @@ def on_message(client, userdata, message):
     data = ((message.payload).decode("utf-8"))
     cur = float(data)
     pow = int(cur*230)
-    ts = datetime.datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
+    ts = round(time.time())
 
+    print(type(ts))
     print(ts)
     print(pow)
 
