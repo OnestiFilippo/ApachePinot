@@ -30,7 +30,6 @@ services:
     container_name: pinot-controller
     volumes:
       - ./config:/config
-      - ./data:/data
     restart: unless-stopped
     ports:
       - "9000:9000"
@@ -60,11 +59,10 @@ services:
       JAVA_OPTS: "-Dplugins.dir=/opt/pinot/plugins -Xms4G -Xmx16G -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xloggc:gc-pinot-server.log"
     depends_on:
       - pinot-broker
-  pinot-webserver:
-    image: httpd:latest
-    container_name: pinot-webserver
+  pinot-php:
+    container_name: pinot-php
+    image: php:8.2-apache
+    volumes:
+    - ./files:/var/www/html/
     ports:
     - '8080:80'
-    volumes:
-    - ./files:/usr/local/apache2/htdocs
-  
