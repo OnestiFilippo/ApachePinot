@@ -37,7 +37,7 @@ Per creare lo schema e la tabella per l'inserimento dei dati in Pinot recarsi ne
   ],
   "dateTimeFieldSpecs": [
     {
-      "name": "timestamp",
+      "name": "datetime",
       "dataType": "LONG",
       "format": "1:MILLISECONDS:EPOCH",
       "granularity": "1:MILLISECONDS"
@@ -59,7 +59,7 @@ Una volta creato lo schema si crei la tabella Realtime tramite il pulsante "Add 
       "retentionTimeUnit": "DAYS",
       "retentionTimeValue": "2",
       "replicasPerPartition": "1",
-      "timeColumnName": "timestamp",
+      "timeColumnName": "datetime",
       "minimizeDataMovement": false
     },
     "tenants": {
