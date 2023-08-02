@@ -265,4 +265,6 @@ http://localhost:8080
 
 Da questa è possibile effettuare query al database Pinot e ricevere la risposta sulla stessa pagina, visualizzare l'ultimo valore inserito nel database che si aggiorna in tempo reale e visualizzare il grafico di tutti i valori presenti nel database generato tramite Apache Superset.
 
+Screenshot pagina web:
+<img width="1680" alt="f3d79d12-7b11-4b59-82e3-c1786fc752c6" src="https://github.com/OnestiFilippo/Progetto_ApachePinot/assets/77025139/5f715d30-fe15-4976-a6b7-fd31574e7211">
 
