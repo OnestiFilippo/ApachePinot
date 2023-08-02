@@ -123,45 +123,88 @@ Così facendo si crea automaticamente un topic Kafka di nome "power" su cui verr
 pip3 install kafka-python
 ``` 
 
-Per inviare i dati alla tabella di Pinot si può utilizzare uno script python (kafka_random.py) che genera valori casuali e li invia ogni secondo con il timestamp attuale alla tabella di Pinot tramite il topic Kafka appena generato.
+### Installazione libreria pinotdb
 
 ``` bash
-from kafka import KafkaProducer
-import json
-import random
-import time
-import datetime
-
-producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
-
-while True:
-    ts = round(time.time())
-    
-    producer.send('power', {"timestamp":ts , "sensor" : "piSensor" , "powerValue" : random.randint(0,1000)})
-    time.sleep(1)
-
-```
-In alternativa si può usare lo script kafka_daily_simulation.py che genera valori casuali per una durata simulata di una giornata. 
-``` bash
-from kafka import KafkaProducer
-import json
-import random
-import time
-import datetime
-
-start = 1684965600
-
-producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
-
-i=0
-
-for i in range(0,8640):
-    ts = round(time.time())
-    producer.send('power', {"timestamp":ts , "sensor" : "piSensor" , "powerValue" : random.randint(0,1000)})
-    print(ts)
-    time.sleep(0.001)
-
+pip3 install pinotdb
 ``` 
+
+Per inviare i dati alla tabella di Pinot si può utilizzare lo script python (kafka_random_threading.py) che genera valori casuali e li invia ogni secondo con il timestamp attuale alla tabella di Pinot tramite il topic Kafka appena generato.
+Oltre a generare i dati casuali aggiorna ogni volta il file che consente la visualizzazione dell'ultimo valore inserito nel database sulla pagina web e rimane in attesa di query da parte della pagina web per inoltrarle al database pinot e ricevere la risposta da visualizzare sulla pagina.
+
+Per eseguire questo file aprire una finestra del terminale con i privilegi di amministratore ed eseguire il comando:
+
+``` bash
+python3 kafka_random_threading.py
+```
+
+kafka_random_threading.py
+``` bash
+from pinotdb import connect
+import time
+import json
+import os
+from threading import Thread
+import datetime
+import random
+import json
+from kafka import KafkaProducer
+
+producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+
+def rand_last():
+    while True:
+        ts = round(time.time()) + 7200
+        
+        val = random.randint(0,1000)
+        print("datatetime:"+str(ts)+" - sensor:random - powerValue:"+str(val))
+        producer.send('power', {"datetime":ts , "sensor" : "random" , "powerValue" : val})
+
+        outfile = open("files/last.json","w")
+        strfile = [ ts , val , 'piSensor']
+        json.dump(strfile, outfile)
+        outfile.close()
+
+        time.sleep(2)
+
+conn = connect(host='localhost', port=8099, path='/query/sql', scheme='http')
+curs = conn.cursor()
+
+def query():
+    while True:
+        if(os.path.exists("files/query.txt")):
+            f = open("files/query.txt", "r")
+            query = f.read()
+            print(query)
+            f.close()
+            outfile = open("files/response.json","w")
+            try:
+                curs.execute(query)
+                for row in curs:
+                    print(row)
+                    json.dump(str(row), outfile, indent=2)
+                    outfile.write('\n')
+                print()
+            except:
+                json.dump("ERROR", outfile, indent=2)
+            outfile.close()
+            os.remove("files/query.txt")
+
+# create two new threads
+t1 = Thread(target=rand_last)
+t2 = Thread(target=query)
+
+# start the threads
+t1.start()
+t2.start()
+
+# wait for the threads to complete
+t1.join()
+t2.join()
+```
+
+In alternativa si può utilizzare il file kafka_mqtt_threading.py per inserire nel database Pinot i dati reali provenienti da un sensore di corrente ricevuti tramite MQTT.
+
 ## Apache Superset (solo WINDOWS, LINUX e MACOS NON APPLE SILICON)
 
 Per l'inizializzazione di Apache Superset eseguire il seguente comando per la clonazione della repository di Superset:
@@ -212,5 +255,14 @@ Ora è possibile creare i propri Charts e Dashboard selezionando la tabella desi
 
 Esempio di Line Chart di dati casuali:
 ![image](https://github.com/OnestiFilippo/ApachePinot/assets/77025139/4e366137-4cc8-4764-9c2d-34fc3018772b)
+
+## Pagina Web Apache Pinot
+
+Con l'esecuzione del docker-compose iniziale si avvia anche il server web Apache sulla porta 8080 per la visualizzazione della pagina web.
+Per accedervi collegarsi all'indirizzo:
+
+http://localhost:8080
+
+Da questa è possibile effettuare query al database Pinot e ricevere la risposta sulla stessa pagina, visualizzare l'ultimo valore inserito nel database che si aggiorna in tempo reale e visualizzare il grafico di tutti i valori presenti nel database generato tramite Apache Superset.
 
 
