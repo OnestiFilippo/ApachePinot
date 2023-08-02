@@ -130,7 +130,7 @@ pip3 install pinotdb
 ``` 
 
 Per inviare i dati alla tabella di Pinot si può utilizzare lo script python (kafka_random_threading.py) che genera valori casuali e li invia ogni secondo con il timestamp attuale alla tabella di Pinot tramite il topic Kafka appena generato.
-Oltre a generare i dati casuali aggiorna ogni volta il file che consente la visualizzazione dell'ultimo valore inserito nel database sulla pagina web e rimane in attesa di query da parte della pagina web per inoltrarle al database pinot e ricevere la risposta da visualizzare sulla pagina.
+Oltre a generare i dati casuali aggiorna ogni volta il file che consente la visualizzazione dell'ultimo valore inserito nel database sulla pagina web e rimane in attesa di query da parte della pagina web per inoltrarle al database Pinot e ricevere la risposta da visualizzare sulla pagina.
 
 Per eseguire questo file aprire una finestra del terminale con i privilegi di amministratore ed eseguire il comando:
 
